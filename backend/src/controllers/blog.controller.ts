@@ -55,13 +55,13 @@ export async function updateBlog(c: CustomContext) {
 }
 
 export async function getBlogById(c: CustomContext) {
+  const id = c.req.param("id");
   const prisma = getPrisma(c.env.DATABASE_URL);
-  const body = await c.req.json();
 
   try {
     const blog = await prisma.blog.findFirst({
       where: {
-        id: body.id,
+        id: Number(id),
       },
     });
 
