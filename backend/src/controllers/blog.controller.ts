@@ -1,3 +1,7 @@
+import {
+  createBlogInput,
+  updateBlogInput,
+} from "@vinaybadgujar102/blogify-common";
 import { getPrisma } from "../db/prismaClient";
 import { CustomContext } from "../types/appContext";
 
@@ -5,6 +9,15 @@ export async function createBlog(c: CustomContext) {
   const prisma = getPrisma(c.env.DATABASE_URL);
   const body = await c.req.json();
   const userId = c.get("userId");
+
+  const { success } = createBlogInput.safeParse(body);
+
+  if (!success) {
+    c.status(411);
+    return c.json({
+      message: "Inputs not correct",
+    });
+  }
 
   try {
     const blog = await prisma.blog.create({
@@ -31,6 +44,15 @@ export async function createBlog(c: CustomContext) {
 export async function updateBlog(c: CustomContext) {
   const prisma = getPrisma(c.env.DATABASE_URL);
   const body = await c.req.json();
+
+  const { success } = updateBlogInput.safeParse(body);
+
+  if (!success) {
+    c.status(411);
+    return c.json({
+      message: "Inputs not correct",
+    });
+  }
 
   try {
     const blog = await prisma.blog.update({
