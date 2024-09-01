@@ -101,12 +101,23 @@ export async function getBlogById(c: CustomContext) {
 //add pagination later
 export async function getAllBlogs(c: CustomContext) {
   const prisma = getPrisma(c.env.DATABASE_URL);
-  const body = await c.req.json();
 
   try {
-    const blog = await prisma.blog.findMany();
+    const blogs = await prisma.blog.findMany({
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
     return c.json({
-      blog,
+      blogs,
     });
   } catch (error) {
     c.status(411);
