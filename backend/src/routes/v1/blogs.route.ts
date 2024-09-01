@@ -12,26 +12,29 @@ const blogRouter = new Hono();
 
 blogRouter.use("/*", async (c: CustomContext, next) => {
   const authHeader = c.req.header("authorization") || "";
-  const user = await verify(authHeader, c.env.JWT_SECRET);
-  console.log(user);
-
-  if (user) {
-    // @ts-ignore
-    c.set("userId", user.id);
-    await next();
-  } else {
+  try {
+    const user = await verify(authHeader, c.env.JWT_SECRET);
+    if (user) {
+      c.set("userId", user.id);
+      await next();
+    } else {
+      c.status(403);
+      return c.json({
+        message: "You are not logged in",
+      });
+    }
+  } catch (e) {
+    c.status(403);
     return c.json({
-      message: "you are not logged in",
+      message: "You are not logged in",
     });
   }
 });
+blogRouter.get("/bulk", getAllBlogs);
+blogRouter.get("/:id", getBlogById);
 
 blogRouter.post("/", createBlog);
 
 blogRouter.put("/", updateBlog);
-
-blogRouter.get("/:id", getBlogById);
-
-blogRouter.get("/bulk", getAllBlogs);
 
 export default blogRouter;

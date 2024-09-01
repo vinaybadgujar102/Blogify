@@ -1,5 +1,6 @@
 import Appbar from "../components/Appbar";
 import { BlogCard } from "../components/BlogCard";
+import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks";
 
 const Blogs = () => {
@@ -10,7 +11,12 @@ const Blogs = () => {
       <div>
         <Appbar />
         <div className="flex justify-center">
-          <div>loading...</div>
+          <div>
+            <BlogSkeleton />
+            <BlogSkeleton />
+            <BlogSkeleton />
+            <BlogSkeleton />
+          </div>
         </div>
       </div>
     );

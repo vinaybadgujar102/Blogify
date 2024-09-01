@@ -1,5 +1,6 @@
 import Appbar from "../components/Appbar";
 import { FullBlog } from "../components/FullBlog";
+import { Spinner } from "../components/Spinner";
 import { useBlog } from "../hooks";
 import { useParams } from "react-router-dom";
 
@@ -16,7 +17,9 @@ const Blog = () => {
         <Appbar />
 
         <div className="h-screen flex flex-col justify-center">
-          <div className="flex justify-center">loading...</div>
+          <div className="flex justify-center">
+            <Spinner />
+          </div>
         </div>
       </div>
     );

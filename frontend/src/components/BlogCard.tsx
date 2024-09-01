@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 interface BlogCardProps {
   authorName: string;
@@ -50,19 +51,50 @@ export function Avatar({
   name: string;
   size?: "small" | "big";
 }) {
+  const [showOptions, setShowOptions] = useState(false);
+  const handleShowOption = () => {
+    setShowOptions((showOptions) => !showOptions);
+  };
   return (
-    <div
-      className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full ${
-        size === "small" ? "w-6 h-6" : "w-10 h-10"
-      }`}
-    >
-      <span
-        className={`${
-          size === "small" ? "text-xs" : "text-md"
-        } font-extralight text-gray-600 dark:text-gray-300`}
+    <>
+      <button
+        id="dropdownAvatarNameButton"
+        data-dropdown-toggle="dropdownAvatarName"
+        className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full ${
+          size === "small" ? "w-6 h-6" : "w-10 h-10"
+        }`}
+        onClick={handleShowOption}
       >
-        {name[0]}
-      </span>
-    </div>
+        <span
+          className={`${
+            size === "small" ? "text-xs" : "text-md"
+          } font-extralight text-gray-600 dark:text-gray-300`}
+        >
+          {name[0]}
+        </span>
+      </button>
+      <div
+        id="dropdownAvatarName"
+        className={`absolute z-10 ${
+          showOptions ? "" : "hidden"
+        }  bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600`}
+      >
+        <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+          <div className="font-medium ">Pro User</div>
+          <div className="truncate">name@flowbite.com</div>
+        </div>
+
+        <div className="py-2">
+          <button
+            // onClick={() => {
+            //   localStorage.removeItem("token");
+            // }}
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+          >
+            Sign out
+          </button>
+        </div>
+      </div>
+    </>
   );
 }
